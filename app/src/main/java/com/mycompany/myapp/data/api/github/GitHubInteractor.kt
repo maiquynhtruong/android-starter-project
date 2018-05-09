@@ -36,11 +36,11 @@ class GitHubInteractor(
     }
 
     // for jobs
-    class LoadJobsRequest(val keyword: String)
+    class LoadJobsRequest(val keyword: String, val location: String)
     class LoadJobsResponse(val request: LoadJobsRequest, val jobs: List<Job>)
 
     fun loadJobs(request: LoadJobsRequest): Observable<LoadJobsResponse> {
-        return api.listJobs(request.keyword)
+        return api.listJobs(request.keyword, request.location)
                 .toObservable()
                 .map { response -> checkResponse(response, context.getString(R.string.error_get_jobs_error)) }
                 .map { response -> response.body() ?: emptyList() }

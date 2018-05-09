@@ -15,8 +15,9 @@ interface GitHubApiService {
             @Path("user") user: String,
     @Path("repository") repository: String): Single<Response<List<Commit>>>
 
-    @GET("positions.json/search={keyword}&page=1")
+    @GET("positions.json/")
     fun listJobs(
-            @Query("keyword") keyword: String
+            @Query("search") keyword: String,
+            @Query("location") location: String
     ): Single<Response<List<Job>>>
 }
