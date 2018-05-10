@@ -10,6 +10,7 @@ import com.mycompany.myapp.R
 import com.mycompany.myapp.data.api.github.GitHubInteractor
 import com.mycompany.myapp.data.api.github.GitHubInteractor.LoadCommitsRequest
 import com.mycompany.myapp.data.api.github.model.Commit
+import com.mycompany.myapp.data.api.github.model.Job
 import com.mycompany.myapp.ui.BaseViewModel
 import com.mycompany.myapp.ui.SimpleSnackbarMessage
 import com.mycompany.myapp.util.RxUtils.delayAtLeast
@@ -27,62 +28,62 @@ class MainViewModel @Inject constructor(
 
     @Parcelize
     class State(
-            var username: String = "",
-            var repository: String = "") : Parcelable
+            var keyword: String = "",
+            var location: String = "") : Parcelable
 
-    sealed class Commits {
-        class Loading : Commits()
-        class Result(val commits: List<Commit>) : Commits()
-        class Error(val message: String) : Commits()
+    sealed class Jobs {
+        class Loading : Jobs()
+        class Result(val jobs: List<Job>) : Jobs()
+        class Error(val message: String) : Jobs()
     }
 
     override fun setupViewModel() {
-        username = "madebyatomicrobot"  // NON-NLS
-        repository = "android-starter-project"  // NON-NLS
+        keyword = "mobile"  // NON-NLS
+        location = "new+york"  // NON-NLS
 
-        fetchCommits()
+        fetchJobs()
     }
 
     @VisibleForTesting
-    internal var commits: Commits = Commits.Result(emptyList())
+    internal var jobs: Jobs = Jobs.Result(emptyList())
         set(value) {
             field = value
 
             notifyPropertyChanged(BR.loading)
-            notifyPropertyChanged(BR.commits)
-            notifyPropertyChanged(BR.fetchCommitsEnabled)
+            notifyPropertyChanged(BR.jobs)
+            notifyPropertyChanged(BR.fetchJobsEnabled)
 
             when (value) {
-                is Commits.Error -> snackbarMessage.value = value.message
+                is Jobs.Error -> snackbarMessage.value = value.message
             }
         }
 
     val snackbarMessage = SimpleSnackbarMessage()
 
-    var username: String
-        @Bindable get() = state.username
+    var keyword: String
+        @Bindable get() = state.keyword
         set(value) {
-            state.username = value
-            notifyPropertyChanged(BR.username)
+            state.keyword = value
+            notifyPropertyChanged(BR.keyword)
         }
 
-    var repository: String
-        @Bindable get() = state.repository
+    var location: String
+        @Bindable get() = state.location
         set(value) {
-            state.repository = value
-            notifyPropertyChanged(BR.repository)
+            state.location = value
+            notifyPropertyChanged(BR.location)
         }
 
-    @Bindable("username", "repository")
-    fun isFetchCommitsEnabled(): Boolean = commits !is Commits.Loading && !username.isEmpty() && !repository.isEmpty()
+    @Bindable("keyword", "location")
+    fun isFetchJobsEnabled(): Boolean = jobs !is Jobs.Loading && !keyword.isEmpty() && !location.isEmpty()
 
     @Bindable
-    fun isLoading(): Boolean = commits is Commits.Loading
+    fun isLoading(): Boolean = jobs is Jobs.Loading
 
     @Bindable
-    fun getCommits() = commits.let {
+    fun getJobs() = jobs.let {
         when (it) {
-            is Commits.Result -> it.commits
+            is Jobs.Result -> it.jobs
             else -> emptyList()
         }
     }
@@ -91,18 +92,19 @@ class MainViewModel @Inject constructor(
 
     fun getFingerprint(): String = BuildConfig.VERSION_FINGERPRINT
 
-    fun fetchCommits() {
-        commits = Commits.Loading()
-        disposables.add(delayAtLeast(gitHubInteractor.loadCommits(LoadCommitsRequest(username, repository)), loadingDelayMs)
-                .map { it.commits }  // Pull the commits out of the response
+    companion object {
+        private const val STATE_KEY = "MainViewModelState"  // NON-NLS
+    }
+
+    fun fetchJobs() {
+        jobs = Jobs.Loading()
+        disposables.add(delayAtLeast(gitHubInteractor.loadJobs(GitHubInteractor.LoadJobsRequest(keyword, location)), loadingDelayMs)
+                .map { it.jobs }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        { commits = Commits.Result(it) },
-                        { commits = Commits.Error(it.message ?: app.getString(R.string.error_unexpected)) }))
-    }
-
-    companion object {
-        private const val STATE_KEY = "MainViewModelState"  // NON-NLS
+                        { jobs = Jobs.Result(it) },
+                        { jobs = Jobs.Error(it.message ?: app.getString(R.string.error_unexpected)) }
+                ))
     }
 }
