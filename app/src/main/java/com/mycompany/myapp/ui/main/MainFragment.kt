@@ -37,8 +37,8 @@ class MainFragment : BaseFragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
         binding.vm = viewModel
 
-        binding.commits.layoutManager = LinearLayoutManager(activity)
-        binding.commits.adapter = CommitsAdapter()
+        binding.jobs.layoutManager = LinearLayoutManager(activity)
+        binding.jobs.adapter = CommitsAdapter()
 
         return binding.root
     }

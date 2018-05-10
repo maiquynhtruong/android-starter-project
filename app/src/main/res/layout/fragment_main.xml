@@ -33,11 +33,11 @@
                 android:layout_marginTop="16dp">
 
                 <EditText
-                    android:id="@+id/username"
+                    android:id="@+id/keyword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/username"
-                    android:text="@={vm.username}"/>
+                    android:hint="@string/keyword"
+                    android:text="@={vm.keyword}"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -52,22 +52,22 @@
                     android:id="@+id/repository"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/repository"
-                    android:text="@={vm.repository}"/>
+                    android:hint="@string/location"
+                    android:text="@={vm.location}"/>
 
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/fetch_commits"
+                android:id="@+id/fetch_jobs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="8dp"
-                android:enabled="@{vm.fetchCommitsEnabled}"
-                android:onClick="@{() -> vm.fetchCommits()}"
-                android:text="@string/fetch_commits"/>
+                android:enabled="@{vm.fetchJobsEnabled}"
+                android:onClick="@{() -> vm.fetchJobs()}"
+                android:text="@string/fetch_jobs"/>
 
         </LinearLayout>
 
@@ -108,12 +108,12 @@
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/commits"
+            android:id="@+id/jobs"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="0dp"
             android:scrollbars="vertical"
-            app:items="@{vm.commits}"
+            app:items="@{vm.jobs}"
             app:layout_constraintBottom_toTopOf="@+id/footer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
