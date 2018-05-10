@@ -3,6 +3,7 @@ package com.mycompany.myapp.ui.main
 import com.mycompany.myapp.TrampolineSchedulerRule
 import com.mycompany.myapp.data.api.github.GitHubInteractor
 import com.mycompany.myapp.data.api.github.model.Commit
+import com.mycompany.myapp.data.api.github.model.Job
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Observable
@@ -55,42 +56,63 @@ class MainViewModelTest {
         assertTrue(viewModel.getFingerprint().matches(expectedPattern))
     }
 
+//    @Test
+//    fun testFetchCommitsEnabled() {
+//        viewModel.username = "test"
+//        viewModel.repository = ""
+//        assertFalse(viewModel.isFetchCommitsEnabled())
+//
+//        viewModel.username = ""
+//        viewModel.repository = "test"
+//        assertFalse(viewModel.isFetchCommitsEnabled())
+//
+//        viewModel.username = ""
+//        viewModel.repository = ""
+//        assertFalse(viewModel.isFetchCommitsEnabled())
+//
+//        viewModel.username = "test"
+//        viewModel.repository = ""
+//        assertFalse(viewModel.isFetchCommitsEnabled())
+//
+//        viewModel.username = ""
+//        viewModel.repository = "test"
+//        assertFalse(viewModel.isFetchCommitsEnabled())
+//
+//        viewModel.username = "test"
+//        viewModel.repository = "test"
+//        assertTrue(viewModel.isFetchCommitsEnabled())
+//    }
+
     @Test
-    fun testFetchCommitsEnabled() {
-        viewModel.username = "test"
-        viewModel.repository = ""
-        assertFalse(viewModel.isFetchCommitsEnabled())
+    fun testFetchJobsEnabled() {
+        //fun isFetchJobsEnabled(): Boolean = jobs !is Jobs.Loading && !keyword.isEmpty() && !location.isEmpty()
+        viewModel.keyword = "mobile"
+        viewModel.location = ""
+        assertFalse(viewModel.isFetchJobsEnabled())
 
-        viewModel.username = ""
-        viewModel.repository = "test"
-        assertFalse(viewModel.isFetchCommitsEnabled())
+        viewModel.keyword = ""
+        viewModel.location = "Cincinnati"
+        assertFalse(viewModel.isFetchJobsEnabled())
 
-        viewModel.username = ""
-        viewModel.repository = ""
-        assertFalse(viewModel.isFetchCommitsEnabled())
+        viewModel.keyword = ""
+        viewModel.location = ""
+        assertFalse(viewModel.isFetchJobsEnabled())
 
-        viewModel.username = "test"
-        viewModel.repository = ""
-        assertFalse(viewModel.isFetchCommitsEnabled())
-
-        viewModel.username = ""
-        viewModel.repository = "test"
-        assertFalse(viewModel.isFetchCommitsEnabled())
-
-        viewModel.username = "test"
-        viewModel.repository = "test"
-        assertTrue(viewModel.isFetchCommitsEnabled())
+        viewModel.keyword = "mobile"
+        viewModel.location = "Cincinnati"
+        assertTrue(viewModel.isFetchJobsEnabled())
     }
 
     @Test
-    fun testFetchCommits() {
-        val mockResult = mock(GitHubInteractor.LoadCommitsResponse::class.java)
-        val mockCommit = mock(Commit::class.java)
-        whenever(mockResult.commits).thenReturn(listOf(mockCommit))
-        whenever(githubInteractor.loadCommits(any())).thenReturn(Observable.just(mockResult))
+    fun testFetchJobs() {
+        val mockResult = mock(GitHubInteractor.LoadJobsResponse::class.java)
+        val mockJob = mock(Job::class.java)
+        whenever(mockResult.jobs).thenReturn(listOf(mockJob))
+        whenever(githubInteractor.loadJobs(any())).thenReturn(Observable.just(mockResult))
 
-        assertTrue((viewModel.commits as? MainViewModel.Commits.Result)?.commits?.isEmpty() ?: false)
-        viewModel.fetchCommits()
-        assertTrue((viewModel.commits as? MainViewModel.Commits.Result)?.commits?.size == 1)
+        assertTrue((viewModel.jobs as? MainViewModel.Jobs.Result)?.jobs?.isEmpty() ?: false)
+        viewModel.fetchJobs()
+        assertTrue((viewModel.jobs as? MainViewModel.Jobs.Result)?.jobs?.size == 1)
     }
+
 }
