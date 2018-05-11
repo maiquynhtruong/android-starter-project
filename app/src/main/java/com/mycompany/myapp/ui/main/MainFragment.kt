@@ -9,8 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.mycompany.myapp.CommitItemBinding
+import com.mycompany.myapp.ItemJobSummaryBinding
 import com.mycompany.myapp.R
 import com.mycompany.myapp.data.api.github.model.Commit
+import com.mycompany.myapp.data.api.github.model.Job
 import com.mycompany.myapp.ui.BaseFragment
 import com.mycompany.myapp.util.recyclerview.ArrayAdapter
 
@@ -38,7 +40,8 @@ class MainFragment : BaseFragment() {
         binding.vm = viewModel
 
         binding.jobs.layoutManager = LinearLayoutManager(activity)
-        binding.jobs.adapter = CommitsAdapter()
+//        binding.jobs.adapter = CommitsAdapter()
+        binding.jobs.adapter = JobsAdapter()
 
         return binding.root
     }
@@ -66,6 +69,27 @@ class MainFragment : BaseFragment() {
         : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Commit) {
+            binding.item = item
+            binding.executePendingBindings()
+        }
+    }
+
+    private class JobsAdapter : ArrayAdapter<Job, JobViewHolder>() {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JobViewHolder {
+            val layoutInflater = LayoutInflater.from(parent.context)
+            val binding: ItemJobSummaryBinding = DataBindingUtil.inflate(layoutInflater, R.layout.item_job_summary, parent, false)
+            return JobViewHolder(binding)
+        }
+
+        override fun onBindViewHolder(holder: JobViewHolder, position: Int) {
+            val job = getItemAtPosition(position)
+            holder.bind(job)
+        }
+    }
+
+    private class JobViewHolder(
+            private val binding: ItemJobSummaryBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: Job) {
             binding.item = item
             binding.executePendingBindings()
         }
