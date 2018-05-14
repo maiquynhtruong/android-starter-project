@@ -2,6 +2,7 @@ package com.mycompany.myapp.ui
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import com.mycompany.myapp.ui.details.DetailsViewModel
 import com.mycompany.myapp.ui.main.MainViewModel
 // GENERATOR - MORE IMPORTS //
 import dagger.Binds
@@ -16,6 +17,11 @@ abstract class ViewModelFactoryModule: VariantViewModelFactoryModule() {
     @IntoMap
     @ViewModelKey(MainViewModel::class)
     abstract fun bindsMainViewModel(mainViewModel: MainViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DetailsViewModel::class)
+    abstract fun bindsDetailsViewModel(detailsViewModel: DetailsViewModel): ViewModel
 
     // GENERATOR - MORE VIEW MODELS //
 }

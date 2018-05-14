@@ -25,6 +25,13 @@
         </activity>
         <!-- GENERATOR - MORE ACTIVITIES -->
 
+        <activity
+            android:label="@string/details_name"
+            android:name=".ui.details.DetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
         <activity-alias
             android:name=".Launcher"
             android:targetActivity=".ui.main.MainActivity"/>

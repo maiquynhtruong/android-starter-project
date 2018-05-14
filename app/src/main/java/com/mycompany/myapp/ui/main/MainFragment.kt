@@ -17,21 +17,11 @@ import com.mycompany.myapp.ui.BaseFragment
 import com.mycompany.myapp.util.recyclerview.ArrayAdapter
 
 class MainFragment : BaseFragment() {
-    interface MainFragmentHost
+
 
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: MainFragmentBinding
-    private var host: MainFragmentHost? = null
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        host = context as MainFragmentHost
-    }
-
-    override fun onDetach() {
-        host = null
-        super.onDetach()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewModel = getViewModel(MainViewModel::class)
@@ -41,7 +31,7 @@ class MainFragment : BaseFragment() {
 
         binding.jobs.layoutManager = LinearLayoutManager(activity)
 //        binding.jobs.adapter = CommitsAdapter()
-        binding.jobs.adapter = JobsAdapter()
+        binding.jobs.adapter = JobsAdapter(viewModel)
 
         return binding.root
     }
@@ -74,7 +64,11 @@ class MainFragment : BaseFragment() {
         }
     }
 
-    private class JobsAdapter : ArrayAdapter<Job, JobViewHolder>() {
+    class JobsAdapter(val clickHandler: ClickHandler) : ArrayAdapter<Job, JobViewHolder>() {
+        interface ClickHandler{
+            fun onJobClicked(job: Job)
+        }
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JobViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val binding: ItemJobSummaryBinding = DataBindingUtil.inflate(layoutInflater, R.layout.item_job_summary, parent, false)
@@ -83,14 +77,15 @@ class MainFragment : BaseFragment() {
 
         override fun onBindViewHolder(holder: JobViewHolder, position: Int) {
             val job = getItemAtPosition(position)
-            holder.bind(job)
+            holder.bind(job, clickHandler)
         }
     }
 
-    private class JobViewHolder(
+    class JobViewHolder(
             private val binding: ItemJobSummaryBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Job) {
+        fun bind(item: Job, clickHandler: JobsAdapter.ClickHandler) {
             binding.item = item
+            binding.clickHandler = clickHandler
             binding.executePendingBindings()
         }
     }

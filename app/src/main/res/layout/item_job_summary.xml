@@ -7,12 +7,9 @@
         <variable
             name="item"
             type="com.mycompany.myapp.data.api.github.model.Job" />
-    </data>
-
-    <data class="com.mycompany.myapp.ui.details.DetailsFragmentBinding">
         <variable
-            name="vm"
-            type="com.mycompany.myapp.ui.details.DetailsViewModel"/>
+            name="clickHandler"
+            type="com.mycompany.myapp.ui.main.MainFragment.JobsAdapter.ClickHandler"/>
     </data>
 
     <android.support.v7.widget.CardView
@@ -24,7 +21,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
         app:cardCornerRadius="4dp"
-        android:onClick="@{() -> vm.displayJobDetails()}">
+        android:onClick="@{() -> clickHandler.onJobClicked(item)}">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"

@@ -1,6 +1,7 @@
 package com.mycompany.myapp.ui.main
 
 import android.app.Application
+import android.content.Intent
 import android.databinding.Bindable
 import android.os.Parcelable
 import android.support.annotation.VisibleForTesting
@@ -13,6 +14,7 @@ import com.mycompany.myapp.data.api.github.model.Commit
 import com.mycompany.myapp.data.api.github.model.Job
 import com.mycompany.myapp.ui.BaseViewModel
 import com.mycompany.myapp.ui.SimpleSnackbarMessage
+import com.mycompany.myapp.ui.details.DetailsActivity
 import com.mycompany.myapp.util.RxUtils.delayAtLeast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -24,7 +26,18 @@ class MainViewModel @Inject constructor(
         private val app: Application,
         private val gitHubInteractor: GitHubInteractor,
         @Named("loading_delay_ms") private val loadingDelayMs: Long)
-    : BaseViewModel<MainViewModel.State>(app, STATE_KEY, State()) {
+    : BaseViewModel<MainViewModel.State>(app, STATE_KEY, State()), MainFragment.JobsAdapter.ClickHandler {
+
+    override fun onJobClicked(job: Job) {
+        val intent = Intent(app, DetailsActivity::class.java).apply {
+            putExtra("title", job.title)
+            putExtra("company", job.company)
+            putExtra("location", job.location)
+            putExtra("type", job.type)
+            putExtra("description", job.description)
+        }
+        app.startActivity(intent)
+    }
 
     @Parcelize
     class State(
