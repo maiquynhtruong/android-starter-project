@@ -24,21 +24,18 @@ class DetailsActivity: BaseActivity() {
         viewModel = getViewModel(DetailsViewModel::class)
         viewModel.restoreState(savedInstanceState)
 
+        title = intent?.getStringExtra("title") ?: ""
+        company = intent?.getStringExtra("company") ?: ""
+        type = intent?.getStringExtra("type") ?: ""
+        location = intent?.getStringExtra("location") ?: ""
+        description = intent?.getStringExtra("description") ?: ""
+
+        val job = Job(title, location, type, company, description)
+        viewModel.updateJobDetail(job)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_details)
         binding.vm = viewModel
         binding.executePendingBindings()
-
-        // pull job detail off bundle
-        title = savedInstanceState?.getString("title") ?: ""
-        company = savedInstanceState?.getString("company") ?: ""
-        type = savedInstanceState?.getString("type") ?: ""
-        location = savedInstanceState?.getString("location") ?: ""
-        description = savedInstanceState?.getString("description") ?: ""
-
-        // Next, do this
-        var job: Job = Job(title, location, type, company, description)
-        viewModel.updateJobDetail(job)
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

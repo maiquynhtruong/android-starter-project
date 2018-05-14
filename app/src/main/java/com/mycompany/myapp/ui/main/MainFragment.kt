@@ -18,7 +18,6 @@ import com.mycompany.myapp.util.recyclerview.ArrayAdapter
 
 class MainFragment : BaseFragment() {
 
-
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: MainFragmentBinding
 
