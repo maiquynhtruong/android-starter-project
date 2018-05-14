@@ -6,9 +6,8 @@ import android.support.design.widget.Snackbar
 import com.mycompany.myapp.R
 import com.mycompany.myapp.ui.BaseActivity
 import com.mycompany.myapp.ui.SimpleSnackbarMessage
-import com.mycompany.myapp.ui.main.MainFragment.MainFragmentHost
 
-class MainActivity : BaseActivity(), MainFragmentHost {
+class MainActivity : BaseActivity() {
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: MainActivityBinding
 
