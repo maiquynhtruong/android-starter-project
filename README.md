@@ -1,3 +1,15 @@
+# Github Job Fetcher
+
+This is a project I worked on earlier during my internship at Atomic Robot. The original repo pulls commits information from Github given username and a repo. My task was to modify the app so that it pulls job data from the Github Jobs API (https://jobs.github.com/api) instead.
+
+To accomplish the goal, I had to learn different architecture, testing frameworks in Android. Some of them are Data Binding, RxAndroid, Dagger 2, Mockito, and Espresso. 
+
+Here are some screenshots of the finished app:
+
+![image](https://user-images.githubusercontent.com/10360577/43806428-ec9bf0a4-9a71-11e8-88dc-35ce28e0e102.png)
+
+Since this is a forked repo, the following setup instruction is taken from the original repo from Atomic Robot.
+
 ## Project Setup
 
 ### Setting up a new project
